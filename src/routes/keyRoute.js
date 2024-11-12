@@ -16,9 +16,7 @@ router.post('/check/:key/:projectId/:customerId', async (req, res) => {
     const key = req.params.key;
     const customerId = req.params.customerId;
     const projectId = req.params.projectId;
-
-
-
+    console.log('Revisando llave de acceso para el proyecto ' + projectId + ' del usuario ' + customerId + ' con la llave ' + key);
     const customerRef = db.collection('customers').doc(customerId);
     let doc = await customerRef.get();
     let customerData = doc.data();
@@ -26,7 +24,7 @@ router.post('/check/:key/:projectId/:customerId', async (req, res) => {
     let keyData = keys.find(key => key.projectId === projectId);
     if (keyData != undefined) {
         if (keyData.apiKey === key && keyData.active === true && keyData.projectId === projectId) {
-            console.log('autorizado');
+            console.log('El usuario' + customerId + ' está autorizado');
 
             res.status(200).send({
                 message: 'Authorized, welcome to the project page',
@@ -35,11 +33,11 @@ router.post('/check/:key/:projectId/:customerId', async (req, res) => {
             });
         }
     } else {
-        console.log('buscado si tiene llave antigua');
+        console.log('buscado si el usuario ' + customerId + ' tiene llave desactivada');
         let oldKeys = customerData.oldKeys;
         let oldKeyData = oldKeys.find(key => key.projectId === projectId);
         if (oldKeyData.apiKey === key && oldKeyData.projectId === projectId) {
-            console.log('su llave ha sido desactivada');
+            console.log('La llave' + key + 'para el proyecto ' + projectId + 'del usuario ' + customerId + ' ha sido desactivada');
 
             res.status(401).send({
                 status: 401,
@@ -47,7 +45,7 @@ router.post('/check/:key/:projectId/:customerId', async (req, res) => {
                 message: 'Su llave ha sido desactivada el ' + moment(oldKeyData.desactivatedAt).format('DD/MM/YYYY') + ', si desea reactivarla, por favor contacte al administrador',
             });
         } else {
-            console.log('no autorizado');
+            console.log('El usuario' + customerId + ' NO está autorizado');
 
             res.status(401).send({
                 message: 'Unauthorized',
