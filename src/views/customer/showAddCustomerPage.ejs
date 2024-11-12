@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar cliente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 p-8">
+    <nav class="flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-500">Sistema de gestión de claves</div>
+        <div class="
+        flex items-center space-x-4
+        ">
+            <a href="/customer/all-customers" class="text-1xl font-bold text-blue-500" style="cursor: pointer;">
+                Ver clientes
+            </a>
+            <div onclick="logout()" class="text-1xl font-bold text-red-500" style="cursor: pointer;">Logout</div>
+        </div>
+    </nav>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-center mb-6">
+            <%= pagina %>
+        </h1>
+        <form id="customerForm" method="POST" action="/customer/add-customer">
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                <input type="text" id="name" name="name" required
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+                <input type="tel" id="phone" name="phone" required
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Descipción</label>
+                <textarea id="description" name="description" required
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <input type="submit"
+                class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+        </form>
+    </div>
+
+
+    <footer>
+        <p class="text-center mt-4 text-gray-500">© 2021 Todos los derechos reservados</p>
+
+    </footer>
+    <script>
+        async function logout() {
+            try {
+                const response = await fetch('/auth/logout', { method: 'POST' });
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+            }
+        }
+    </script>
+</body>
+
+
+</html>

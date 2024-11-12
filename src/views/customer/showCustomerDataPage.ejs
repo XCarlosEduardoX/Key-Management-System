@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <nav class="flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-500">Key Management System</div>
+        <div onclick="logout()" class="text-1xl font-bold text-red-500" style="cursor: pointer;">Logout</div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-center mb-6">Customer Information</h2>
+
+
+
+        <% if (customerData.keys.length> 0) { %>
+            <!-- card de key activa -->
+            <h4 class="text-lg font-bold mt-6 ">
+                API Key Information
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <% customerData.keys.forEach(function(key) { %>
+                    <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                        <p class="font-semibold text-blue-700" id="apiKey" style="cursor: pointer;">
+                            <%= key.apiKey %>
+                        </p>
+
+                        <div class="mt-2">
+                            <p class="mb-2">
+                                <span class="font-semibold ">ID del proyecto:</span>
+                                <%= key.projectId %>
+                            </p>
+                            <% if (key.reactivatedAt !=null) { %>
+
+                                <p class="mb-2">
+                                    <span class="font-semibold ">Fecha de Reactivación:</span>
+                                    <%= moment(key.reactivatedAt).format('DD/MM/YYYY') %> a las <%=
+                                            moment(key.reactivatedAt).format('HH:mm:ss') %>
+                                </p>
+                                <% } else { %>
+
+                                    <p class="mb-2">
+                                        <span class="font-semibold ">Fecha de activación:</span>
+                                        <%= moment(key.activatedAt).format('DD/MM/YYYY') %> a las <%=
+                                                moment(key.activatedAt).format('HH:mm:ss') %>
+                                    </p>
+
+                                    <% } %>
+
+                        </div>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-2 text-center"
+                            onclick="deactivateKey('<%=JSON.stringify(key) %>')">
+                            Desactivar key
+                        </button>
+                    </div>
+                    <% }) %>
+            </div>
+
+            <% } else { %>
+                <div class="text-center font-bold text-red-500">
+                    No hay key activa
+                </div>
+                <% } %>
+                    <h4 class="text-lg font-bold mt-6">Información del cliente</h4>
+
+                    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+
+                        <!-- Información del Cliente en Formato de Tarjeta -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Customer ID:</p>
+                                <p id="customerId" class="text-blue-700" style="cursor: pointer;"
+                                    onclick="copyKey('<%=JSON.stringify(customerData.customerId) %>')">
+                                    <%= customerData.customerId %>
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Name:</p>
+                                <p id="name" class="text-blue-700">
+                                    <%= customerData.name %>
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Email:</p>
+                                <p id="email" class="text-blue-700">
+                                    <%= customerData.email %>
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Phone:</p>
+                                <p id="phone" class="text-blue-700">
+                                    <%= customerData.phone %>
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Description:</p>
+                                <p id="description" class="text-blue-700">
+                                    <%= customerData.description %>
+                                </p>
+                            </div>
+
+                            <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                <p class="font-semibold">Created At:</p>
+                                <p id="createdAt" class="text-blue-700">
+                                    <%= moment(customerData.createdAt).format('DD/MM/YYYY') %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- Grids para Keys Inactivas -->
+                    <% if (customerData.oldKeys.length> 0) { %>
+                        <h4 class="text-lg font-bold mb-4 mt-6">API Keys Inactivas</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <% customerData.oldKeys.forEach(function(oldKey) { %>
+                                <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+                                    <p class="font-semibold text-blue-700" id="apiKey" style="cursor: pointer;">
+                                        <%= oldKey.apiKey %>
+                                    </p>
+
+                                    <div class="mt-2">
+                                        <p class="mb-2">
+                                            <span class="font-semibold ">Fecha de activación:</span>
+                                            <%= moment(oldKey.activatedAt).format('DD/MM/YYYY') %> a las <%=
+                                                    moment(oldKey.activatedAt).format('HH:mm:ss') %>
+                                        </p>
+                                        <p><span class="font-semibold">Fecha de desactivación:</span>
+                                            <%= moment(oldKey.desactivatedAt).format('DD/MM/YYYY') %> a las <%=
+                                                    moment(oldKey.desactivatedAt).format('HH:mm:ss') %>
+                                        </p>
+                                    </div>
+                                    <div class="mt-6 text-center">
+                                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                            onclick="reactivateKey('<%=JSON.stringify(oldKey) %>')">
+                                            Rectivar key
+                                        </button>
+
+                                    </div>
+                                </div>
+                                <% }) %>
+
+                        </div>
+                        <% } %>
+
+
+    </div>
+    <!-- Conditional Button -->
+    <div class="mt-6 text-center">
+        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" onclick="activateKey()">
+            Activar key
+        </button>
+
+    </div>
+</body>
+
+<script>
+
+    function copyKey(keyString) {
+        const key = JSON.parse(keyString);
+        navigator.clipboard.writeText(key);
+    }
+
+    async function logout() {
+        try {
+            const response = await fetch('/auth/logout', {
+                method: 'POST'
+            });
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
+    }
+    function activateKey() {
+        fetch('/customer/activate-key/<%= customerData.customerId %>', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function deactivateKey(keyString) {
+        const key = JSON.parse(keyString);
+        fetch('/customer/desactivate-key/<%= customerData.customerId %>/' + key.projectId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function reactivateKey(keyString) {
+        const key = JSON.parse(keyString);
+        fetch('/customer/reactivate-key/<%= customerData.customerId %>/' + key.projectId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+
+</script>
+
+</html>
