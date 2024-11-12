@@ -11,14 +11,15 @@
 // controllers/authController.js
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import 'dotenv/config'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCxfvH6RH3qR25EGjdfB83Yv5F1EbNl528",
-    authDomain: "key-generator-b0381.firebaseapp.com",
-    projectId: "key-generator-b0381",
-    storageBucket: "key-generator-b0381.firebasestorage.app",
-    messagingSenderId: "258745895745",
-    appId: "1:258745895745:web:9b9f8ee25d8e97c6aeefc0"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
