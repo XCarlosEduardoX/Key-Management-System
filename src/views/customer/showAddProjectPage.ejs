@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar cliente</title>
+    <title>Agregar proyecto</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -24,24 +24,20 @@
         <h1 class="text-3xl font-bold text-center mb-6">
             <%= pagina %>
         </h1>
-        <form id="customerForm" method="POST" action="/customer/add-customer">
+        <form id="customerForm" method="POST" action="/customer/add-project/<%= customerId %>">
             <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nombre del proyecto</label>
                 <input type="text" id="name" name="name" required
                     class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required
-                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono:</label>
-                <input type="tel" id="phone" name="phone" required
-                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="description" class="block text-sm font-medium text-gray-700">Descripción </label>
+                <textarea id="description" name="description" required
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
 
-            <input type="submit" value="Agregar cliente" style="cursor: pointer;"
+
+            <input type="submit" value="Agregar proyecto" style="cursor: pointer;"
                 class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
         </form>
     </div>
